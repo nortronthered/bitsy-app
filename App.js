@@ -4,97 +4,116 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 const API_ADDRESSS = 'http://192.168.0.2:3000';
 
 export default class ButtonBasics extends Component {
-  _onPressButton() {
-    alert('You tapped the button!')
+  constructor(props) {
+    super(props);
+    this.state = { currentPattern: 'blackout' };
   }
 
+
+  //TODO: allow these to be set over websocket???
+  //TODO: do not allow pressing of another pattern until fetch has finished
   //TODO: Make these more generic
   //TODO: remove alerts and opt for current status/toaster
 
-  _onPressRed() {
+  _onPressRed = (e) => {
     fetch(`${API_ADDRESSS}/red`, { method: 'GET'})
     .then((response) => {
-      alert("red!")
+      // this.state.currentPattern = "red"
+      this.setState({currentPattern: "red"});
     })
     .catch((error) => {
-      alert("there's been an error")
+      alert("there's been an error");
+      console.log(error);
     });
-  }
+  };
 
-  _onPressBlackout() {
+  _onPressBlackout = (e) => {
     fetch(`${API_ADDRESSS}/black`, { method: 'GET'})
     .then((response) => {
-      alert("blackout!")
+      this.state.currentPattern = "blackout"
     })
     .catch((error) => {
-      alert("there's been an error")
+      alert("there's been an error");
+      console.log(error);
     });
-  }
+  };
 
-  _onPressGreen() {
+  _onPressGreen = (e) => {
     fetch(`${API_ADDRESSS}/green`, { method: 'GET'})
     .then((response) => {
-      alert("green!")
+      this.setState({currentPattern: "green"});
     })
     .catch((error) => {
-      alert("there's been an error")
+      alert("there's been an error");
+      console.log(error);
     });
-  }
+  };
 
-  _onPressBlue() {
+  _onPressBlue = () => {
     fetch(`${API_ADDRESSS}/blue`, { method: 'GET'})
     .then((response) => {
-      alert("blue!")
+      this.setState({currentPattern: "blue"});
     })
     .catch((error) => {
-      alert("there's been an error")
+      alert("there's been an error");
+      console.log(error);
     });
-  }
+  };
 
-  _onPressPurple() {
+  _onPressPurple = () => {
     fetch(`${API_ADDRESSS}/purple`, { method: 'GET'})
     .then((response) => {
-      alert("purple!")
+      this.setState({currentPattern: "purple"});
     })
     .catch((error) => {
-      alert("there's been an error")
+      alert("there's been an error");
+      console.log(error);
     });
-  }
+  };
 
-  _onPressFlicker() {
+  _onPressFlicker = () => {
     fetch(`${API_ADDRESSS}/flicker`, { method: 'GET'})
     .then((response) => {
-      alert("flicker!")
+      this.setState({currentPattern: "flicker"});
     })
     .catch((error) => {
-      alert("there's been an error")
+      alert("there's been an error");
+      console.log(error);
     });
-  }
+  };
 
-  _onPressRainbow() {
+  _onPressRainbow = () => {
     fetch(`${API_ADDRESSS}/rainbowFade`, { method: 'GET'})
     .then((response) => {
-      alert("rainbow!")
+      this.setState({currentPattern: "rainbow"});
     })
     .catch((error) => {
-      alert("there's been an error")
+      alert("there's been an error");
+      console.log(error);
     });
-  }
+  };
 
-  _onPressVideo() {
+  _onPressVideo = () => {
     fetch(`${API_ADDRESSS}/video`, { method: 'GET'})
     .then((response) => {
-      alert("video!")
+      console.log(this)
+      this.setState({currentPattern: "video"});
     })
     .catch((error) => {
-      alert("there's been an error")
+      alert("there's been an error");
+      console.log(error);
     });
-  }
+  };
+
+  state = {
+    currentPattern: "blackout"
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.headerButton}>Mitsy Controller!</Text>
+        <Text style={styles.headerButton}>Current Pattern: {this.state.currentPattern}</Text>
         <View style={styles.blackoutButton}>
           <Button
             onPress={this._onPressBlackout}

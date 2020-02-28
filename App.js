@@ -1,106 +1,55 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View, ScrollView } from 'react-native';
+import PatternButton from "./patterns/PatternButton";
+import SolidColorPattern from "./patterns/SolidColorPattern";
 
-const API_ADDRESSS = 'http://192.168.0.2:3000';
+const API_ADDRESS = 'http://192.168.0.2:3000';
+// const API_ADDRESS = 'http://192.168.87.49:3000';
 
-export default class ButtonBasics extends Component {
+export default class Bitsy extends Component {
   constructor(props) {
     super(props);
     this.state = { currentPattern: 'blackout' };
   }
+  
+  patterns = {
+    solidColor: {
+      pattern: "solidColor",
+      patternData: {
+        red: 255,
+        green: 0,
+        blue: 0,
+      }
+    },
+    videoPattern: {
+      pattern: "loopingVideo",
+      patternData: {
 
+      }
+    }
+  };
 
-  //TODO: allow these to be set over websocket???
   //TODO: do not allow pressing of another pattern until fetch has finished
-  //TODO: Make these more generic
   //TODO: remove alerts and opt for current status/toaster
 
-  _onPressRed = (e) => {
-    fetch(`${API_ADDRESSS}/red`, { method: 'GET'})
+  handlePatternSelect = (pattern) => {
+    let data = {
+      pattern: pattern.pattern,
+      patternData: pattern.data,
+    };
+    fetch(`${API_ADDRESS}/pattern`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
     .then((response) => {
-      // this.state.currentPattern = "red"
-      this.setState({currentPattern: "red"});
+      console.log('switching to new pattern');
+      this.setState({currentPattern: pattern.name});
     })
     .catch((error) => {
-      alert("there's been an error");
-      console.log(error);
-    });
-  };
-
-  _onPressBlackout = (e) => {
-    fetch(`${API_ADDRESSS}/black`, { method: 'GET'})
-    .then((response) => {
-      this.state.currentPattern = "blackout"
-    })
-    .catch((error) => {
-      alert("there's been an error");
-      console.log(error);
-    });
-  };
-
-  _onPressGreen = (e) => {
-    fetch(`${API_ADDRESSS}/green`, { method: 'GET'})
-    .then((response) => {
-      this.setState({currentPattern: "green"});
-    })
-    .catch((error) => {
-      alert("there's been an error");
-      console.log(error);
-    });
-  };
-
-  _onPressBlue = () => {
-    fetch(`${API_ADDRESSS}/blue`, { method: 'GET'})
-    .then((response) => {
-      this.setState({currentPattern: "blue"});
-    })
-    .catch((error) => {
-      alert("there's been an error");
-      console.log(error);
-    });
-  };
-
-  _onPressPurple = () => {
-    fetch(`${API_ADDRESSS}/purple`, { method: 'GET'})
-    .then((response) => {
-      this.setState({currentPattern: "purple"});
-    })
-    .catch((error) => {
-      alert("there's been an error");
-      console.log(error);
-    });
-  };
-
-  _onPressFlicker = () => {
-    fetch(`${API_ADDRESSS}/flicker`, { method: 'GET'})
-    .then((response) => {
-      this.setState({currentPattern: "flicker"});
-    })
-    .catch((error) => {
-      alert("there's been an error");
-      console.log(error);
-    });
-  };
-
-  _onPressRainbow = () => {
-    fetch(`${API_ADDRESSS}/rainbowFade`, { method: 'GET'})
-    .then((response) => {
-      this.setState({currentPattern: "rainbow"});
-    })
-    .catch((error) => {
-      alert("there's been an error");
-      console.log(error);
-    });
-  };
-
-  _onPressVideo = () => {
-    fetch(`${API_ADDRESSS}/video`, { method: 'GET'})
-    .then((response) => {
-      console.log(this)
-      this.setState({currentPattern: "video"});
-    })
-    .catch((error) => {
-      alert("there's been an error");
+      alert("There's been an error");
       console.log(error);
     });
   };
@@ -111,66 +60,52 @@ export default class ButtonBasics extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={styles.headerButton}>Mitsy Controller!</Text>
         <Text style={styles.headerButton}>Current Pattern: {this.state.currentPattern}</Text>
-        <View style={styles.blackoutButton}>
-          <Button
-            onPress={this._onPressBlackout}
-            title="Blackout Pattern"
-            color="#666666"
-          />
-        </View>
-        <View style={styles.redButton}>
-          <Button
-            onPress={this._onPressRed}
-            title="Red Pattern"
-            color="#FF0000"
-          />
-        </View>
-        <View style={styles.greenButton}>
-          <Button
-            onPress={this._onPressGreen}
-            title="Green Pattern"
-            color="#00FF00"
-          />
-        </View>
-        <View style={styles.blueButton}>
-          <Button
-            onPress={this._onPressBlue}
-            title="Blue Pattern"
-            color="#0000FF"
-          />
-        </View>
-        <View style={styles.purpleButton}>
-          <Button
-            onPress={this._onPressPurple}
-            title="Purple Pattern"
-            color="#FF00FF"
-          />
-        </View>
-        <View style={styles.flickerButton}>
-          <Button
-            onPress={this._onPressFlicker}
-            title="Flicker Pattern"
-            color="#FFFFFF"
-          />
-        </View>
-        <View style={styles.rainbowButton}>
-          <Button
-            onPress={this._onPressRainbow}
-            title="Rainbow Pattern"
-            color="#aa00aa"
-          />
-        </View>
-        <View style={styles.videoButton}>
-          <Button
-            onPress={this._onPressVideo}
-            title="Video Pattern"
-            color="#aaaaaa"
-          />
-        </View>
-      </View>
+        <SolidColorPattern
+          title="Red Pattern"
+          color="#FF0000"
+          pattern="solidColor"
+          onSelect={this.handlePatternSelect}
+        />
+        <PatternButton
+          onSelect={this.handlePatternSelect}
+          pattern="flicker"
+          title="Flicker Pattern"
+          color="#FFFFFF"
+        />
+        <PatternButton
+          onSelect={this.handlePatternSelect}
+          pattern="rainbowFade"
+          title="Rainbow Pattern"
+          color="#aa00aa"
+        />
+        <PatternButton
+          onSelect={this.handlePatternSelect}
+          pattern="rainbowWarp"
+          title="Rainbow Warp Pattern"
+          color="#aa00aa"
+        />
+        <PatternButton
+          onSelect={this.handlePatternSelect}
+          pattern="loopingVideo"
+          title="Video Pattern"
+          color="#aaaaaa"
+        />
+        <PatternButton
+          onSelect={this.handlePatternSelect}
+          pattern="chaseTester"
+          title="Chase Tester Pattern"
+          color="#aaaaaa"
+        />
+        <PatternButton
+          onSelect={this.handlePatternSelect}
+          pattern="loopingVideo"
+          title="XY Tester Pattern"
+          color="#aaaaaa"
+        />
+      </ScrollView>
     );
   }
 }
@@ -178,58 +113,12 @@ export default class ButtonBasics extends Component {
 const styles = StyleSheet.create({
   container: {
    flex: 1,
-   justifyContent: 'center',
+   // justifyContent: 'center',
   },
   headerButton: {
     color: 'blue',
     fontWeight: 'bold',
     fontSize: 30,
-  },
-  redButton: {
-    fontWeight: 'bold',
-    margin: 20,
-    borderRadius: 12,
-    backgroundColor: '#000000',
-  },
-  blackoutButton: {
-    fontWeight: 'bold',
-    margin: 20,
-    borderRadius: 12,
-    backgroundColor: '#000000',
-  },
-  greenButton: {
-    margin: 20,
-    borderRadius: 12,
-    backgroundColor: '#000000',
-  },
-  blueButton: {
-    margin: 20,
-    borderRadius: 12,
-    backgroundColor: '#000000',
-    color: '#0000FF',
-  },
-  purpleButton: {
-    margin: 20,
-    borderRadius: 12,
-    backgroundColor: '#000000',
-    color: '#841584',
-  },
-  flickerButton: {
-    margin: 20,
-    borderRadius: 12,
-    backgroundColor: '#000000',
-    color: '#FFFFFF',
-  },
-  rainbowButton: {
-    margin: 20,
-    borderRadius: 12,
-    backgroundColor: '#000000',
-    color: '#aa00aa',
-  },
-  videoButton: {
-    margin: 20,
-    borderRadius: 12,
-    backgroundColor: '#000000',
   },
   alternativeLayoutButtonContainer: {
     margin: 20,

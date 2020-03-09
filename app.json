@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Blank Template",
-    "slug": "mitsy-app",
+    "name": "Bitsy Controller",
+    "slug": "bitsy-app",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [

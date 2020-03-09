@@ -1,46 +1,36 @@
-import {Button, StyleSheet, View} from "react-native";
+import {Text, View} from "react-native";
+import {Card, Slider} from "react-native-elements";
 import React from "react";
 
-import PatternButton from "./PatternButton";
+const SolidColorPattern = ({color, handleSolidColorPatternUpdate}) => {
+  return (
+    <Card title="Solid Color">
+      <View>
+        <Text>Red Value: {color.red}</Text>
+        <Slider
+          maximumValue={255}
+          value={color.red}
+          onValueChange={value => handleSolidColorPatternUpdate({red: parseInt(value)})}
+        />
+      </View>
+      <View>
+        <Text>Green Value: {color.green}</Text>
+        <Slider
+          maximumValue={255}
+          value={color.green}
+          onValueChange={value => handleSolidColorPatternUpdate({green: parseInt(value)})}
+        />
+      </View>
+      <View>
+        <Text>Blue Value: {color.blue}</Text>
+        <Slider
+          maximumValue={255}
+          value={color.blue}
+          onValueChange={value => handleSolidColorPatternUpdate({blue: parseInt(value)})}
+        />
+      </View>
+    </Card>
+  )
+};
 
-export default class SolidColorPattern extends PatternButton {
-  constructor(props) {
-    super(props);
-    this.handleSelect = this.handleSelect.bind(this);
-    this.pattern = {
-      name: "Red Pattern",
-      pattern: "solidColor",
-      data: {
-        red: 255,
-        green: 0,
-        blue: 0,
-      }
-    }
-  }
-
-  handleSelect = (e) => {
-    // pass in object containing all the data needed to switch pattern
-    this.props.onSelect(this.pattern);
-  };
-
-  render() {
-    return (
-      <PatternButton
-        title="Red Pattern"
-        color="#FF0000"
-        pattern="solidColor"
-        onSelect={this.handlePatternSelect}
-      />
-  )};
-}
-
-const styles = StyleSheet.create({
-  theButton: {
-    backgroundColor: '#000000',
-  },
-  patternButton: {
-    margin: 20,
-    borderRadius: 12,
-    backgroundColor: '#000000',
-  },
-});
+export default SolidColorPattern;

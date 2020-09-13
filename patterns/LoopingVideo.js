@@ -3,36 +3,18 @@ import {Card, Slider} from "react-native-elements";
 import React from "react";
 import {CustomPicker} from "react-native-custom-picker";
 
-const videos = [
-  {
-    label: 'My Face',
-    value: 'myface'
-  },
-  {
-    label: 'Katya',
-    value: 'katya'
-  },
-  {
-    label: 'Katya Lipss',
-    value: 'katya-lips'
-  },
-  {
-    label: 'Circles',
-    value: 'circles'
-  }
-];
-
-const LoopingVideoPattern = ({handleVideoChange}) => {
+const LoopingVideoPattern = ({handleVideoChange, videos}) => {
+  let vids = videos.map(video => ({ label: video.description, value: video.name }));
+  console.log('vids', vids);
   return (
     <Card title="Videos">
       <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
         <CustomPicker
           placeholder={'Please select your favorite item...'}
-          options={videos}
+          options={vids}
           getLabel={item => item.label}
           onValueChange={newVideo => {
-            handleVideoChange(newVideo)
-            // Alert.alert('Selected Item', value ? JSON.stringify(value) : 'No item were selected!')
+            handleVideoChange(newVideo);
           }}
         />
       </View>

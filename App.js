@@ -5,12 +5,13 @@ import { CustomPicker } from 'react-native-custom-picker';
 
 import LoopingVideoPattern from './patterns/LoopingVideo';
 import SolidColorPattern from './patterns/SolidColorPattern';
+import PulseSolidColorPattern from './patterns/PulseSolidColorPattern';
 // import RainbowFadePattern from './patterns/RainbowFadePattern';
 
 import SolidColor from './patterns/SolidColor';
 
-// const API_ADDRESS = 'http://192.168.0.2:3000';
-const API_ADDRESS = 'http://192.168.0.128:3000';
+const API_ADDRESS = 'http://192.168.0.2:3000';
+// const API_ADDRESS = 'http://192.168.0.128:3000';
 // const API_ADDRESS = 'http://192.168.87.49:3000';
 
 //TODO: should Pattern be an object complete and serializable with its own JSON props? yes
@@ -25,6 +26,8 @@ const Bitsy = () => {
 
   const [currentPattern, setCurrentPattern] = useState(solidColor);
 
+  const [videos, setVideos] = useState([]);
+
   const handlePatternSelect = (pattern) => {
     console.log('pattern selected');
     return;
@@ -33,6 +36,10 @@ const Bitsy = () => {
   // TODO: play around with updating value vs stepping
   // TODO: add color representation
   const handleSolidColorPatternUpdate = colorChange => {
+    setColor({...color, ...colorChange});
+  };
+
+  const handlePulseSolidColorPatternUpdate = colorChange => {
     setColor({...color, ...colorChange});
   };
 
@@ -78,6 +85,26 @@ const Bitsy = () => {
     });
   };
 
+  useEffect(() => {
+    console.log('fetching more videos');
+    const address =`${API_ADDRESS}/videos`;
+    fetch(address, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      console.log('videos obje', json);
+      setVideos(json)
+    })
+    .catch((error) => {
+      alert("There's been an error");
+      console.log(error);
+    });
+  }, []);
+
   return (
     <Fragment>
       <ScrollView style={styles.container}>
@@ -86,7 +113,13 @@ const Bitsy = () => {
           handleSolidColorPatternUpdate={handleSolidColorPatternUpdate}
         />
 
+        <PulseSolidColorPattern
+          color={color}
+          handlePulseSolidColorPatternUpdate={handlePulseSolidColorPatternUpdate}
+        />
+
         <LoopingVideoPattern
+          videos={videos}
           handleVideoChange={handleVideoChange}
         />
 

@@ -1,7 +1,10 @@
+import 'react-native-gesture-handler';
 import React, { Fragment, useEffect, useState } from 'react';
 import { StyleSheet, Alert, Picker, Text, View, ScrollView } from 'react-native';
 import { Button, Card, ListItem, Icon, Slider } from 'react-native-elements';
 import { CustomPicker } from 'react-native-custom-picker';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import LoopingVideoPattern from './patterns/LoopingVideo';
 import SolidColorPattern from './patterns/SolidColorPattern';
@@ -10,52 +13,112 @@ import PulseSolidColorPattern from './patterns/PulseSolidColorPattern';
 
 import SolidColor from './patterns/SolidColor';
 
-const API_ADDRESS = 'http://192.168.0.2:3000';
-// const API_ADDRESS = 'http://192.168.0.128:3000';
-// const API_ADDRESS = 'http://192.168.87.49:3000';
+const Stack = createStackNavigator();
 
-//TODO: should Pattern be an object complete and serializable with its own JSON props? yes
-//TODO: give people the ability to create their own set of params
-//TODO: Highlight selected component
-//TODO: Expo without internet
-const Bitsy = () => {
+const API_ADDRESS = 'http://192.168.0.22:3000';
 
-  const [solidColor, setSolidColor] = useState(new SolidColor(255,0,0));
-
+const SolidColorPatterns = () => {
   const [color, setColor] = useState({'red': 255, 'green': 0, 'blue': 0});
 
-  const [currentPattern, setCurrentPattern] = useState(solidColor);
-
-  const [videos, setVideos] = useState([]);
-
-  const handlePatternSelect = (pattern) => {
-    console.log('pattern selected');
-    return;
-  };
+  const [pulseColor, setPulseColor] = useState({'red': 255, 'green': 0, 'blue': 0});
 
   // TODO: play around with updating value vs stepping
   // TODO: add color representation
   const handleSolidColorPatternUpdate = colorChange => {
+    console.log("handling solid color change event");
     setColor({...color, ...colorChange});
   };
 
   const handlePulseSolidColorPatternUpdate = colorChange => {
-    setColor({...color, ...colorChange});
+    setPulseColor({...color, ...colorChange});
   };
 
   // TODO: prevent this from rendering every time
   useEffect(() => {
     updatePattern('solidColor', solidColor.serialize());
   }, [solidColor]);
-
+  
   useEffect(() => {
     // TODO: if pattern is active, update it
     setSolidColor(new SolidColor(color.red, color.green, color.blue));
   }, [color]);
 
+  return (
+    <ScrollView style={styles.container}>
+      <PulseSolidColorPattern
+        color={color}
+        handlePulseSolidColorPatternUpdate={handlePulseSolidColorPatternUpdate}
+      />
+
+      <SolidColorPattern
+        color={color}
+        handleSolidColorPatternUpdate={handleSolidColorPatternUpdate}
+      />
+    </ScrollView>
+  );
+}
+
+const VideoPatterns = () => {
+
+  const [videos, setVideos] = useState([]);
+
+  useEffect(() => {
+    console.log('fetching more videos');
+    const address =`${API_ADDRESS}/videos`;
+    fetch(address, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      console.log('videos object', json);
+      setVideos(json.videos)
+    })
+    .catch((error) => {
+      alert("There's been an error");
+      console.log(error);
+    });
+  }, []);
+
+  return (
+    <ScrollView style={styles.container}>
+      <LoopingVideoPattern
+        videos={videos}
+        handleVideoChange={handleVideoChange}
+      />
+    </ScrollView>
+  );
+}
+
+function HomeScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+    </View>
+  );
+}
+
+//TODO: should Pattern be an object complete and serializable with its own JSON props? yes
+//TODO: give people the ability to create their own set of params
+//TODO: Highlight selected component
+//TODO: Expo without internet
+//TODO: see if there is connectivity to the API, and if not, guide the user to set the API address
+//TODO: set API address
+const Bitsy = () => {
+
+  const [solidColor, setSolidColor] = useState(new SolidColor(255,0,0));
+
+  const [currentPattern, setCurrentPattern] = useState(solidColor);
+
+  const handlePatternSelect = (pattern) => {
+    console.log('pattern selected');
+    return;
+  };
 
   const handleVideoChange = newVideo => {
-    updatePattern('loopingVideo', {'video': newVideo.value});
+    updatePattern('jsonVideo', {'video': newVideo.value});
   };
 
   // const handleRainbowFadeChange = speed => {
@@ -85,54 +148,15 @@ const Bitsy = () => {
     });
   };
 
-  useEffect(() => {
-    console.log('fetching more videos');
-    const address =`${API_ADDRESS}/videos`;
-    fetch(address, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((response) => response.json())
-    .then((json) => {
-      console.log('videos obje', json);
-      setVideos(json)
-    })
-    .catch((error) => {
-      alert("There's been an error");
-      console.log(error);
-    });
-  }, []);
 
   return (
-    <Fragment>
-      <ScrollView style={styles.container}>
-        <SolidColorPattern
-          color={color}
-          handleSolidColorPatternUpdate={handleSolidColorPatternUpdate}
-        />
-
-        <PulseSolidColorPattern
-          color={color}
-          handlePulseSolidColorPatternUpdate={handlePulseSolidColorPatternUpdate}
-        />
-
-        <LoopingVideoPattern
-          videos={videos}
-          handleVideoChange={handleVideoChange}
-        />
-
-        {/*<RainbowFadePattern*/}
-          {/*handleRainbowFadeChange={handleRainbowFadeChange}*/}
-        {/*/>*/}
-
-        <Button
-          title="GO"
-          onPress={handlePatternSelect}
-        />
-      </ScrollView>
-    </Fragment>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Color Patterns" component={SolidColorPatterns} />
+        <Stack.Screen name="Video Patterns" component={VideoPatterns} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 
 };

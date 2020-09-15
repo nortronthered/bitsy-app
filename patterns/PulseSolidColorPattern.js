@@ -2,7 +2,7 @@ import {Text, View} from "react-native";
 import {Card, Slider} from "react-native-elements";
 import React from "react";
 
-const PulseSolidColorPattern = ({color, handleSolidColorPatternUpdate}) => {
+const PulseSolidColorPattern = ({color, handlePulseSolidColorPatternUpdate}) => {
   return (
     <Card title="Pulse Solid Color">
       <View>
@@ -10,7 +10,7 @@ const PulseSolidColorPattern = ({color, handleSolidColorPatternUpdate}) => {
         <Slider
           maximumValue={255}
           value={color.red}
-          onValueChange={value => handleSolidColorPatternUpdate({red: parseInt(value)})}
+          onValueChange={value => handlePulseSolidColorPatternUpdate({red: parseInt(value)})}
         />
       </View>
       <View>
@@ -18,7 +18,7 @@ const PulseSolidColorPattern = ({color, handleSolidColorPatternUpdate}) => {
         <Slider
           maximumValue={255}
           value={color.green}
-          onValueChange={value => handleSolidColorPatternUpdate({green: parseInt(value)})}
+          onValueChange={value => handlePulseSolidColorPatternUpdate({green: parseInt(value)})}
         />
       </View>
       <View>
@@ -26,7 +26,7 @@ const PulseSolidColorPattern = ({color, handleSolidColorPatternUpdate}) => {
         <Slider
           maximumValue={255}
           value={color.blue}
-          onValueChange={value => handleSolidColorPatternUpdate({blue: parseInt(value)})}
+          onValueChange={value => handlePulseSolidColorPatternUpdate({blue: parseInt(value)})}
         />
       </View>
     </Card>

@@ -2,7 +2,7 @@ import {Text, View} from "react-native";
 import {Card, Slider} from "react-native-elements";
 import React from "react";
 
-const SolidColorPattern = ({color, handleSolidColorPatternUpdate}) => {
+const SolidColorPattern = ({handleSolidColorPatternUpdate, color}) => {
   return (
     <Card title="Solid Color">
       <View>

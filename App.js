@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BitsyContext } from './BitsyContext';
 
+import appConfig from './config';
 import HomeScreen from './HomeScreen';
 import VideoPatterns from './VideoPatterns';
 import SettingsPage from './SettingsPage';
@@ -82,7 +83,7 @@ const Bitsy = () => {
       pattern: pattern,
       patternData: patternData,
     };
-    const address =`${config.API_ADDRESS}/pattern`;
+    const address =`${apiAddress}/pattern`;
     fetch(address, {
       method: 'PUT',
       headers: {
@@ -99,6 +100,27 @@ const Bitsy = () => {
     });
   };
 
+  const [apiAddress, setApiAddress] = useState(appConfig.defaultApiAddress);
+
+  const apiIsAvailable = () => {
+    const address =`${apiAddress}/test`;
+    return fetch(address, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => {
+      // if we receive back any positive response, this is good
+      console.log(`API address ${apiAddress} is available`)
+      return true;
+    })
+    .catch((error) => {
+      alert("Cannot reach API. Please update address in settings");
+      console.log(error);
+    });
+  }
+
   const styles = StyleSheet.create({
     container: {
      flex: 1,
@@ -113,11 +135,19 @@ const Bitsy = () => {
       margin: 20,
       flexDirection: 'row',
       justifyContent: 'space-between'
+    },
+    button: {
+      backgroundColor: 'pink',
     }
   });
 
   const config = {
-    API_ADDRESS: 'http://192.168.0.22:3000',
+    apiAddress: {
+      apiAddress,
+      setApiAddress,
+    },
+    apiIsAvailable,
+    styles,
   };
   
   // TODO: i want to load this up with a default state without interrupting what's currently going on

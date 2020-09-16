@@ -15,7 +15,7 @@ const VideoPatterns = () => {
 
   useEffect(() => {
     console.log('fetching more videos');
-    const address =`${context.config.API_ADDRESS}/videos`;
+    const address =`${context.config.apiAddress.apiAddress}/videos`;
     fetch(address, {
       method: 'GET',
       headers: {

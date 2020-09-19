@@ -10,63 +10,11 @@ import { BitsyContext } from './BitsyContext';
 import appConfig from './config';
 import HomeScreen from './HomeScreen';
 import VideoPatterns from './VideoPatterns';
+import SolidColorPatterns from './SolidColorPatterns';
 import SettingsPage from './SettingsPage';
-import SolidColorPattern from './patterns/SolidColorPattern';
-import PulseSolidColorPattern from './patterns/PulseSolidColorPattern';
 // import RainbowFadePattern from './patterns/RainbowFadePattern';
 
-import SolidColor from './patterns/SolidColor';
-
 const Stack = createStackNavigator();
-
-// TODO: get this to not automatically scroll from the side when adjusting the values
-// TODO: yanno, this is probably gonna be a better laid out UI anyway, so maybe ignore the above...
-const SolidColorPatterns = () => {
-  const context = useContext(BitsyContext);
-
-  const [color, setColor] = useState({'red': 255, 'green': 0, 'blue': 0});
-
-  const [pulseColor, setPulseColor] = useState({'red': 255, 'green': 0, 'blue': 0});
-
-  const [solidColor, setSolidColor] = useState(new SolidColor(255,0,0));
-
-  // TODO: play around with updating value vs stepping
-  // TODO: add color representation
-  const handleSolidColorPatternUpdate = colorChange => {
-    console.log("handling solid color change event");
-    setColor({...color, ...colorChange});
-  };
-
-  const handlePulseSolidColorPatternUpdate = colorChange => {
-    setPulseColor({...color, ...colorChange});
-  };
-
-  // TODO: prevent this from rendering every time
-  useEffect(() => {
-    context.updatePattern('solidColor', solidColor.serialize());
-  }, [solidColor]);
-  
-  useEffect(() => {
-    // TODO: if pattern is active, update it
-    setSolidColor(new SolidColor(color.red, color.green, color.blue));
-  }, [color]);
-
-  return (
-    <ScrollView style={styles.container}>
-      <PulseSolidColorPattern
-        color={color}
-        handlePulseSolidColorPatternUpdate={handlePulseSolidColorPatternUpdate}
-      />
-
-      <SolidColorPattern
-        color={color}
-        handleSolidColorPatternUpdate={handleSolidColorPatternUpdate}
-      />
-    </ScrollView>
-  );
-}
-
-
 
 //TODO: should Pattern be an object complete and serializable with its own JSON props? yes
 //TODO: give people the ability to create their own set of params

@@ -4,7 +4,8 @@ import React from "react";
 
 const PulseSolidColorPattern = ({color, handlePulseSolidColorPatternUpdate}) => {
   return (
-    <Card title="Pulse Solid Color">
+    <Card>
+      <Card.Title>Pulse Solid Color</Card.Title>
       <View>
         <Text>Red Value: {color.red}</Text>
         <Slider

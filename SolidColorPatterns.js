@@ -25,7 +25,8 @@ const SolidColorPatterns = () => {
   };
 
   const handlePulseSolidColorPatternUpdate = colorChange => {
-    setPulseColor({...color, ...colorChange});
+    console.log("handling pulse color change event");
+    setPulseColor({...pulseColor, ...colorChange});
   };
 
   const handleRainbowShiftPatternUpdate = () => {
@@ -46,7 +47,7 @@ const SolidColorPatterns = () => {
   return (
     <ScrollView style={context.config.styles.container}>
       <PulseSolidColorPattern
-        color={color}
+        color={pulseColor}
         handlePulseSolidColorPatternUpdate={handlePulseSolidColorPatternUpdate}
       />
 

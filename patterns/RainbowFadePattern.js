@@ -6,7 +6,8 @@ const RainbowFadePattern = ({handleRainbowFadeChange}) => {
 
 
   return (
-    <Card title="Rainbow Fade">
+    <Card>
+      <Card.Title>Rainbow Fade</Card.Title>
       <View>
         <Text>Speed Value: {speed}</Text>
         <Slider

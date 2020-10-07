@@ -7,7 +7,8 @@ const LoopingVideoPattern = ({handleVideoChange, videos}) => {
   let vids = videos.map(video => ({ label: video.description, value: video.name }));
   console.log('vids', vids);
   return (
-    <Card title="Videos">
+    <Card>
+      <Card.Title>Videos</Card.Title>
       <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
         <CustomPicker
           placeholder={'Please select your favorite item...'}

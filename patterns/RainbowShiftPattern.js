@@ -4,7 +4,8 @@ import React from "react";
 
 const RainbowShiftPattern = ({handleRainbowShiftPatternUpdate}) => {
   return (
-    <Card title="Rainbow Shift">
+    <Card>
+      <Card.Title>Rainbow Shift</Card.Title>
       <Button
         onPress={handleRainbowShiftPatternUpdate}  
         title="Rainbow Shift"

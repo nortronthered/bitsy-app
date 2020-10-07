@@ -4,7 +4,8 @@ import React from "react";
 
 const SolidColorPattern = ({handleSolidColorPatternUpdate, color}) => {
   return (
-    <Card title="Solid Color">
+    <Card>
+      <Card.Title>Solid Color</Card.Title>
       <View>
         <Text>Red Value: {color.red}</Text>
         <Slider
@@ -29,19 +30,6 @@ const SolidColorPattern = ({handleSolidColorPatternUpdate, color}) => {
           onValueChange={value => handleSolidColorPatternUpdate({blue: parseInt(value)})}
         />
       </View>
-
-      <View style={{flex: 1}}>
-        <Text>Color wheeel</Text>
-        <ColorWheel
-          // initialColor="#ee0000"
-          onColorChange={color => console.log({color})}
-          onColorChangeComplete={color => onChange(color)}
-          // style={{width: Dimensions.get('window').width}}
-          // thumbStyle={{ height: 30, width: 30, borderRadius: 30}}
-        />
-      </View>
-      
-
     </Card>
   )
 };

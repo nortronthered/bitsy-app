@@ -3,7 +3,7 @@
     "name": "Bitsy Controller",
     "slug": "bitsy-app",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
+    "sdkVersion": "38.0.0",
     "platforms": [
       "ios",
       "android",
@@ -24,11 +24,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "permissions": []
+      },
+      "bundleIdentifier": "com.nathannorton.bitsyapp"
     },
     "description": "",
     "android": {
-      "package": "com.nathannorton.bitsyapp"
+      "package": "com.nathannorton.bitsyapp",
+      "permissions": []
     }
   }
 }

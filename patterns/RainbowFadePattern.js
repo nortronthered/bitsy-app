@@ -1,19 +1,22 @@
-import {Text, View} from "react-native";
+import {Button, Text, View} from "react-native";
 import {Card, Slider} from "react-native-elements";
 import React from "react";
 
-const RainbowFadePattern = ({handleRainbowFadeChange}) => {
-
+const RainbowFadePattern = ({handleRainbowFadePatternUpdate, rainbowFadeSpeed}) => {
 
   return (
     <Card>
       <Card.Title>Rainbow Fade</Card.Title>
       <View>
-        <Text>Speed Value: {speed}</Text>
+      {/* <Button
+        title="Rainbow Fade"
+        onPress={handleRainbowFadePatternUpdate}
+      /> */}
+        <Text>Speed Value: {rainbowFadeSpeed}</Text>
         <Slider
           maximumValue={10}
-          value={color.red}
-          onValueChange={value => handleRainbowFadeChange({speed: parseInt(value)})}
+          value={rainbowFadeSpeed}
+          onValueChange={value => handleRainbowFadePatternUpdate(parseInt(value))}
         />
       </View>
     </Card>

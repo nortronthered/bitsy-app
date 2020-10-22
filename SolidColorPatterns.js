@@ -4,6 +4,7 @@ import { BitsyContext } from './BitsyContext';
 import SolidColorPattern from './patterns/SolidColorPattern';
 import PulseSolidColorPattern from './patterns/PulseSolidColorPattern';
 import RainbowShiftPattern from './patterns/RainbowShiftPattern';
+import RainbowFadePattern from './patterns/RainbowFadePattern';
 import SolidColor from './patterns/SolidColor';
 
 // TODO: get this to not automatically scroll from the side when adjusting the values
@@ -16,6 +17,8 @@ const SolidColorPatterns = () => {
   const [pulseColor, setPulseColor] = useState({'red': 255, 'green': 0, 'blue': 0});
 
   const [solidColor, setSolidColor] = useState(new SolidColor(255,0,0));
+
+  const [rainbowFadeSpeed, setRainbowFadeSpeed] = useState(1);
 
   // TODO: play around with updating value vs stepping
   // TODO: add color representation
@@ -31,7 +34,14 @@ const SolidColorPatterns = () => {
 
   const handleRainbowShiftPatternUpdate = () => {
     console.log("trying to switch to rainbow cross fade")
-    context.updatePattern('rainbowCrossFade', {});
+    context.updatePattern("rainbowCrossFade", {});
+  };
+
+  const handleRainbowFadePatternUpdate = (rainbowFadeSpeed) => {
+    console.log("I'm rainbow fading fast");
+    console.log(`At a speed of ${rainbowFadeSpeed} rainbows per second`);
+    setRainbowFadeSpeed(rainbowFadeSpeed);
+    context.updatePattern("rainbowFade", {speed: rainbowFadeSpeed});
   };
 
   // TODO: prevent this from rendering every time
@@ -58,6 +68,11 @@ const SolidColorPatterns = () => {
       
       <RainbowShiftPattern
         handleRainbowShiftPatternUpdate={handleRainbowShiftPatternUpdate}
+      />
+
+      <RainbowFadePattern
+        handleRainbowFadePatternUpdate={handleRainbowFadePatternUpdate}
+        rainbowFadeSpeed={rainbowFadeSpeed}
       />
     </ScrollView>
   );

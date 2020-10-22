@@ -16,7 +16,8 @@ const SettingsPage = () => {
     //TODO: add spinny thing and blank out all other actions
     context.config.apiIsAvailable()
     .then((response) => {
-      // if we receive back any positive response, this is good
+      // if we receive back any positive response, this is good?
+      // TODO: this is showing up no matter what
       alert("API available")
       console.log("API is available")
     })

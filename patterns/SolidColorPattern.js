@@ -6,6 +6,13 @@ const SolidColorPattern = ({handleSolidColorPatternUpdate, color}) => {
   return (
     <Card>
       <Card.Title>Solid Color</Card.Title>
+      {/* <View>
+        <Text>(Placeholder)</Text>
+        <Slider
+          maximumValue={255}
+          value={255}
+        />
+      </View> */}
       <View>
         <Text>Red Value: {color.red}</Text>
         <Slider
